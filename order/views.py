@@ -47,6 +47,7 @@ def addorder(request):
     context = {'form':form}
     return render(request, 'admin/addorders.html', context)
 
+@login_required(login_url = 'login')
 def order_confirm(request, order_id):
 
   order = Order.objects.get(pk=order_id)
@@ -57,6 +58,7 @@ def order_confirm(request, order_id):
 
   return render(request, 'admin/order_confirm.html', context)
 
+@login_required(login_url = 'login')
 def reject_order(request, order_id):
   order = Order.objects.get(pk=order_id)
   order.delete()
@@ -64,6 +66,7 @@ def reject_order(request, order_id):
 
   return redirect('add-order')
 
+@login_required(login_url = 'login')
 def assignrider(request):
   if request.method == 'POST':
     form = AssignRider(request.POST)
@@ -84,7 +87,7 @@ def assignrider(request):
 
 
 
-
+@login_required(login_url = 'login')
 def confirm_assign(request, order_id):
   order = Order.objects.get(pk=order_id)
   rider = Account.objects.filter(designation='RIDER')
@@ -269,7 +272,7 @@ def complete_order(request, user, order_pk, order_name):
 
   
 
-
+@login_required(login_url = 'login')
 def vendor_orders(request):
   user = request.user
   orders = Order.objects.filter(user = user).order_by('-id')

@@ -69,6 +69,8 @@ def vendor_dashboard(request):
      }
     return render(request, 'admin/vendor_dashboard.html', context)
 
+
+@login_required(login_url = 'login')
 def rider_dashboard(request):
 
     user = request.user
@@ -77,6 +79,8 @@ def rider_dashboard(request):
 
     return render(request, 'admin/rider_order.html', context)
 
+
+@login_required(login_url = 'login')
 def rider_pending(request):
     user = request.user
 
@@ -163,6 +167,7 @@ def reject_user(request, email):
     return redirect('all-users')
 
 
+@login_required(login_url = 'login')
 def search(request):
 
     if request.method == 'POST':

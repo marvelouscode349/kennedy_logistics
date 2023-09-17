@@ -5,15 +5,18 @@ import json
 from . models import payment, Subscription
 from django.utils import timezone
 from datetime import date, timedelta
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+# Cr=eate your views here.'
 
+@login_required(login_url = 'login')
 def addpayment(request):
 
     form = AddPayment()
     context = {'form':form}
     return render(request, 'admin/payment.html',context)
 
+@login_required(login_url = 'login')
 def makepayment(request):
     if request.method == 'POST':
         
@@ -35,7 +38,7 @@ def makepayment(request):
     
     return render(request, "admin/pay_confirm.html", context)
 
-
+@login_required(login_url = 'login')
 def insertpayment(request):
     body = json.loads(request.body)
 
