@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
 from . forms import AddPayment
 import uuid
 import json
@@ -6,6 +7,7 @@ from . models import payment, Subscription
 from django.utils import timezone
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
+from account.models import Account
 
 # Cr=eate your views here.'
 
@@ -72,6 +74,40 @@ def insertpayment(request):
     elif subscription_type == 'yearly':
         user_subscription.end_date = user_subscription.start_date + timedelta(days=365)
 
-    user_subscription.save()    
+    user_subscription.save()
+    payment_id = body['payment_id']
+
+    data = {
+        'payment_id':payment_id
+    }    
     
-    return HttpResponse("payment successful")
+    return JsonResponse(data)
+
+def payment_successful(request):
+    payment_id = request.GET.get('payment_id')
+    payment_details = payment.objects.get(payment_id=payment_id)
+    context = {
+        'payment_details':payment_details
+    }
+    return render(request, 'admin/payment_success.html', context)
+
+def all_payment(request):
+    payments = None
+    if request.method == 'POST':
+        user = request.POST.get('vendor')
+        
+        payments = payment.objects.filter(user=user)
+
+
+    else:
+
+        payments = payment.objects.all()
+    vendor = Account.objects.exclude(designation='RIDER', is_superadmin=True)
+
+
+    context = {
+        'payments':payments,
+        'vendor':vendor
+    }
+    
+    return render(request, 'admin/payments_all.html', context)

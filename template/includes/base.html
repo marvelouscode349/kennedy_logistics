@@ -32,7 +32,7 @@
         <div class="container-scroller">
             {% include 'includes/navbar.html' %}
             {% include 'includes/menu.html' %}
-            <div class="alert alert-warning" style="z-index: 2000; width: 90%; height: 90%; margin-top: 60px;">
+            <div class="alert alert-warning" style="z-index: 2; width: 90%; height: 90%; margin-top: 60px;">
                 Your subscription has expired. Please renew it to continue accessing premium content.
                 </div>
         {% else %}
@@ -176,6 +176,7 @@ const csrftoken = getCookie('csrftoken');
                 const user_id = '{{request.user.username}}';
                 const payment_type = '{{payment_type}}';
                 const payment_plan = '{{payment_plan}}';
+                const redirect_url = "{% url 'payment-successful' %}";
                
 
                 const options = {
@@ -211,8 +212,10 @@ const csrftoken = getCookie('csrftoken');
 
                                 }),
                             })
-                            // .then(response => response.json())
-                            // .then(data => console.log(details));
+                            .then((response) => response.json())
+                            .then((data) => {
+                               window.location.href = redirect_url + '?payment_id='+data.payment_id;
+                            });
                         }
                     
                     
