@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from account.models import Account
+from payment.models import payment
 from order.models import Order
 from stock.models import Stock
 from django.db.models import Q
@@ -24,9 +25,10 @@ def admin_dashboard(request):
      orders = Order.objects.all().order_by('-id')[:5]
      order_count = Order.objects.all().count()
      pending_order = Order.objects.filter(status='pending').count()
+     payments = payment.objects.all().order_by('-id')[:6]
 
      context = {
-
+        'payments':payments,
         'users':users, 
         'approved':approved,
         'unapproved':unapproved,

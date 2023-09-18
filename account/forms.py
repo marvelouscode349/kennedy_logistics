@@ -20,8 +20,10 @@ class RegistrationForm(forms.ModelForm):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
 
-        if password != confirm_password:
-            raise forms.ValidationError("password does not match")
+        if password != confirm_password or len(password) < 6:
+            raise forms.ValidationError("please check your password, password must be greater than 5 and must match")
+
+        
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)

@@ -83,6 +83,7 @@ def insertpayment(request):
     
     return JsonResponse(data)
 
+@login_required(login_url = 'login')
 def payment_successful(request):
     payment_id = request.GET.get('payment_id')
     payment_details = payment.objects.get(payment_id=payment_id)
@@ -91,6 +92,7 @@ def payment_successful(request):
     }
     return render(request, 'admin/payment_success.html', context)
 
+@login_required(login_url = 'login')
 def all_payment(request):
     payments = None
     if request.method == 'POST':
