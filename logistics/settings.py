@@ -98,8 +98,12 @@ AUTH_USER_MODEL='account.Account'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'logistics',
+        'USER':'logisticsuser',
+        'PASSWORD':'superuser',
+        'HOST':'logistics.cub7jntdet8t.us-east-1.rds.amazonaws.com',
+        'PORT':'5432'
     }
 }
 
